@@ -1,0 +1,23 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: connect-cluster
+  namespace: kafka
+  annotations:
+    # use-connector-resources configures this KafkaConnect
+    # to use KafkaConnector resources to avoid
+    # needing to call the Connect REST API directly
+    strimzi.io/use-connector-resources: "true"
+spec:
+  image: aldlfkahs/kafka-connect-jdbc:v1.0
+  replicas: 1
+  bootstrapServers: my-cluster-kafka-bootstrap.kafka.svc:9092
+  config:
+    # group.id: test-group
+    offset.storage.topic: __consumer_offsets
+    config.storage.topic: config-topic
+    status.storage.topic: status-topic
+    # -1 means it will use the default replication factor configured in the broker
+    config.storage.replication.factor: 1
+    offset.storage.replication.factor: 1
+    status.storage.replication.factor: 1

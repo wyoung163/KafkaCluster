@@ -1,0 +1,21 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: jdbc-mysql-sync-connector
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: connect-cluster
+spec:
+  class: io.confluent.connect.jdbc.JdbcSinkConnector
+  tasksMax: 1
+  config:
+    delete.enabled: "false"
+    connection.url: "jdbc:mysql://mysql.mysql.svc:3306/${DATABASE}"
+    connection.user: "root"
+    connection.password: ""
+    auto.create: "false"
+    auto.evolve: "true"
+    topics.regex: "_([a-z]+)"
+    #insert.mode: "upsert"
+    #pk.mode: "record_key"
+    #topics: "user"

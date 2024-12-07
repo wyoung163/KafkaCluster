@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: client01
+  labels:
+    app: kafkaClient
+spec:
+  selector:
+    matchLabels:
+      name: kafkaClient
+  template:
+    metadata:
+      labels:
+        name: kafkaClient
+    spec:
+      containers:
+        - name: kafkaClient
+          image: bitnami/kafka:${VERSION} # https://artifacthub.io/packages/helm/bitnami/kafka
+          command: ["tail"]
+          args: ["-f", "/dev/null"]
+      terminationGracePeriodSeconds: 0
